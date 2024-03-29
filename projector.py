@@ -18,6 +18,7 @@ class Projector:
         :return: None
         """
         # get the size of the screen
+        screen_num = int(screen_num)
         monitors = screeninfo.get_monitors()
         if screen_num < 1 or screen_num > len(monitors):
             print(f'Fullscreen: screen {screen_num} is not available')
@@ -94,7 +95,8 @@ class Projector:
         t, r = calibration.lastPose()
         rp = Transforms.opencv_mat_to_lmatrix4f(r)
         tm = LMatrix4f.translateMat(t[0][0], t[1][0], t[2][0])
+        p3d_rotate = LMatrix4f.rotateMat(180, LVector3f(1, 0, 0))
 
-        view = rp * tm
+        view = p3d_rotate * rp * tm
         view.invertInPlace()
         p3window.cam.setMat(view)

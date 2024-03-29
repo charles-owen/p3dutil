@@ -8,7 +8,7 @@ class Axis(pu.NodePathUser):
     """
 
     def __init__(self, p: LVector3f = None, mat: LMatrix4 = None, size=10, thickness=3,
-                 parent: NodePath = None):
+                 parent: NodePath = None, axis=LVector3f(1, 1, 1)):
         """
         Constructor
         :param p: Position to display the coordinate axis
@@ -21,15 +21,15 @@ class Axis(pu.NodePathUser):
         lines.setThickness(thickness)
         lines.setColor(LVecBase4f(1, 0, 0, 1))
         lines.moveTo(0, 0, 0)
-        lines.drawTo(size, 0, 0)
+        lines.drawTo(axis[0] * size, 0, 0)
 
         lines.setColor(LVecBase4f(0, 1, 0, 1))
         lines.moveTo(0, 0, 0)
-        lines.drawTo(0, size, 0)
+        lines.drawTo(0, axis[1] * size, 0)
 
         lines.setColor(LVecBase4f(0, 0, 1, 1))
         lines.moveTo(0, 0, 0)
-        lines.drawTo(0, 0, size)
+        lines.drawTo(0, 0, axis[2] * size)
 
         node = lines.create(False)
         np = NodePath(node)
