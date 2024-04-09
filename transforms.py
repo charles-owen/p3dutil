@@ -1,4 +1,5 @@
 from panda3d.core import *
+
 class Transforms:
 
     @staticmethod
