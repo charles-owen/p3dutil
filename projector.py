@@ -2,6 +2,7 @@ from .transforms import Transforms
 from panda3d.core import *
 import screeninfo
 import sys
+import platform
 
 
 class Projector:
@@ -19,12 +20,12 @@ class Projector:
         """
         # get the size of the screen
         screen_num = int(screen_num)
-        monitors = screeninfo.get_monitors()
+        monitors = Projector.get_monitors()
         if screen_num < 1 or screen_num > len(monitors):
             print(f'Fullscreen: screen {screen_num} is not available')
             return
 
-        screen = screeninfo.get_monitors()[screen_num - 1]
+        screen = monitors[screen_num - 1]
         primary_monitor = self.get_primary_monitor()
 
         # For this, see https://github.com/rr-/screeninfo/issues/63
@@ -42,12 +43,25 @@ class Projector:
         p3app.openMainWindow(props=props)
 
     @staticmethod
+    def get_monitors():
+        """
+        Get monitors from the OS
+        Wrapper for screeninfo.get_monitors that works for different platforms
+        :return: Array of monitors
+        """
+        p = platform.system()
+        if p == 'Darwin':
+            return screeninfo.get_monitors(screeninfo.Enumerator.OSX)
+        else:
+            return screeninfo.get_monitors()
+
+    @staticmethod
     def get_primary_monitor():
         """
         Get the primary monitor using screeninfo
         :return: Primary monitor object
         """
-        monitors = screeninfo.get_monitors()
+        monitors = Projector.get_monitors()
         for monitor in monitors:
             if monitor.is_primary:
                 return monitor
