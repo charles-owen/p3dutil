@@ -15,4 +15,9 @@ output
 *.mp3
 local
 .pytest*
-__pycache*
+__pycache*__pycache*
+data
+*.pth
+.pytest*
+.venv*
+*pycache*
